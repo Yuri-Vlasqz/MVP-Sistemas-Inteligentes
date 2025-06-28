@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Classificação de Risco de Dengue</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Sistema de Classificação de Risco de Dengue</h1>
+            <p>Análise de risco baseada em dados climáticos</p>
+        </header>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-step active" data-step="1">
+                    <div class="step-number">1</div>
+                    <div class="step-label">Consulta Clima</div>
+                </div>
+                <div class="progress-step" data-step="2">
+                    <div class="step-number">2</div>
+                    <div class="step-label">Dados Climáticos</div>
+                </div>
+                <div class="progress-step" data-step="3">
+                    <div class="step-number">3</div>
+                    <div class="step-label">Classificação</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 1: Consulta de Clima Histórico -->
+        <div class="step-content" id="step1">
+            <div class="card">
+                <h2>Etapa 1: Consulta de Clima Histórico</h2>
+                <p>Digite o nome do município para consultar o histórico climático dos últimos 7 dias:</p>
+                
+                <form id="climaForm">
+                    <div class="input-group">
+                        <label for="municipio">Nome do Município:</label>
+                        <input type="text" id="municipio" name="municipio" placeholder="Ex: Rio de Janeiro" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Consultar Clima</button>
+                </form>
+
+                <div id="climaLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Consultando dados climáticos...</p>
+                </div>
+
+                <div id="climaError" class="error-message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Step 2: Dados Climáticos -->
+        <div class="step-content" id="step2" style="display: none;">
+            <div class="card">
+                <h2>Etapa 2: Dados Climáticos Coletados</h2>
+                <div id="climaInfo"></div>
+                
+                <form id="dengueForm">
+                    <h3>Parâmetros para Classificação:</h3>
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label for="semana">Semana do Ano:</label>
+                            <input type="number" id="semana" name="semana" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="temp_min">Temperatura Mínima (°C):</label>
+                            <input type="number" id="temp_min" name="temp_min" required readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="temp_med">Temperatura Média (°C):</label>
+                            <input type="number" id="temp_med" name="temp_med" required readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="temp_max">Temperatura Máxima (°C):</label>
+                            <input type="number" id="temp_max" name="temp_max" required readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="precip_med">Precipitação Média (mm):</label>
+                            <input type="number" id="precip_med" name="precip_med" required readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="umidade_med">Umidade Média (%):</label>
+                            <input type="number" id="umidade_med" name="umidade_med" required readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="faixa_termica">Faixa Térmica (°C):</label>
+                            <input type="number" id="faixa_termica" name="faixa_termica" required readonly>
+                        </div>
+                        <div class="input-group">
+                            <label for="dias_chuvosos">Dias Chuvosos:</label>
+                            <input type="number" id="dias_chuvosos" name="dias_chuvosos" required readonly>
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button type="button" class="btn btn-secondary" onclick="voltarEtapa(1)">Voltar</button>
+                        <button type="submit" class="btn btn-primary">Classificar Risco</button>
+                    </div>
+                </form>
+
+                <div id="classificacaoLoading" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Classificando risco de dengue...</p>
+                </div>
+
+                <div id="classificacaoError" class="error-message" style="display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Step 3: Resultado da Classificação -->
+        <div class="step-content" id="step3" style="display: none;">
+            <div class="card">
+                <h2>Etapa 3: Resultado da Classificação</h2>
+                <div id="resultadoClassificacao"></div>
+                
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="voltarEtapa(2)">Voltar</button>
+                    <button type="button" class="btn btn-primary" onclick="novaConsulta()">Nova Consulta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# API requirements
+Flask
+Flask-Cors
+flask-openapi3
+nose2
+python-dotenv
+pydantic #<2
+typing_extensions
+requests
+# Model requirements
+scikit-learn==1.6.1 # InconsistentVersionWarning!.
+pandas
+numpy
+pytest
+jupyter
+matplotlib
