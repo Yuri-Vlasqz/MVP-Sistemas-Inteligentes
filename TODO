@@ -1,0 +1,7 @@
+TODO List:
+- Inserir notebooks do Colab para `api\MachineLearning\notebooks` e criar arquivos X_test/y_test/test.csv em `api\MachineLearning\data`
+- Criar teste_modelo.py para tertar modelo com acurácia > 80%;
+- Obter semana do ano através da API na rota de `/clima-historico` e retirar `getCurrentWeek()` do `script.js`;
+- Adicionar seção na interface, para mostrar informações climáticas resumidas de cada dia;
+- adicionar icone para o sistema (+favicon);
+- Etapas retornáveis quando clicadas em seu `progress-step` (somente quando ja liberadas);

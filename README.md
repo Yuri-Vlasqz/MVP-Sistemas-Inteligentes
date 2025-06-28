@@ -18,7 +18,7 @@ Desenvolver uma ferramenta que auxilie na prevenção e controle da dengue atrav
 ### Backend
 - **Python 3.12.9**
 - **Flask** - Framework web
-- **Flask-OpenAPI3** - Documentação automática da API
+- **Flask-OpenAPI3** - Documentação automática da API com Swagger-UI
 - **Scikit-learn** - Biblioteca de treinamento de modelo Machine learning
 - **Pandas** - Manipulação de dados
 - **Requests** - Chamadas HTTP para API externa do WeatherAPI
@@ -42,16 +42,16 @@ cd MVP-Sistemas-Inteligentes
 
 ### 2. Configure o ambiente virtual
 ```bash
-python -m venv venv
+python -m venv .venv
 # Windows
-venv\Scripts\activate
+.venv\Scripts\activate
 # Linux/Mac
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 ### 3. Instale as dependências
 ```bash
-pip install -r requirements.txt
+pip install -r api\requirements.txt
 ```
 
 ### 4. Configure as variáveis de ambiente
