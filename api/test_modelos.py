@@ -9,14 +9,17 @@ avaliador = Avaliador()
 pipeline = Pipeline()
 
 # Parâmetros    
-url_dados = "./MachineLearning/data/test_dataset_diabetes.csv"
-colunas = ['semana', 'temp_min', 'temp_med', 'temp_max', 'precip_med', 'umidade_med', 'faixa_termica', 'dias_chuvosos', 'risco_dengue']
+url_dados = "./MachineLearning/data/test_dataset_dengue.csv"
+# colunas precisam ser o mesmo nome e ordem do treinamento para evitar warning no pytest:
+# > UserWarning: X does not have valid feature names, but KNeighborsClassifier was fitted with feature names.
+colunas = ['week', 'temp_min', 'temp_med', 'temp_max', 'precip_med', 'rel_humid_med', 'thermal_range', 'rainy_days', 'risco_dengue']
 
 # Carga dos dados
 dataset = carregador.carregar_dados(url_dados, colunas)
 array = dataset.values
-X = array[:,0:-1]
-y = array[:,-1]
+
+X = dataset.iloc[:,0:-1]
+y = dataset.iloc[:,-1]
 
 
 # Método para testar modelo KNN a partir do arquivo correspondente
@@ -31,7 +34,7 @@ def test_modelo_knn():
     
     # Testando as métricas do KNN
     # Modifique as métricas de acordo com seus requisitos
-    assert acuracia_knn >= 0.80
+    assert acuracia_knn >= 0.85
     # assert recall_knn >= 0.5 
     # assert precisao_knn >= 0.5 
     # assert f1_knn >= 0.5 
