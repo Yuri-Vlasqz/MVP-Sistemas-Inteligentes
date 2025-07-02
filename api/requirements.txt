@@ -1,7 +1,7 @@
 # API requirements
 Flask
 Flask-Cors
-flask-openapi3
+flask-openapi3[swagger]
 nose2
 python-dotenv
 pydantic #<2
