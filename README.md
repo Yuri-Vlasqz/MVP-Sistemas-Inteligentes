@@ -14,20 +14,29 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 ## Fluxo de uso da aplicação pela inteface/frontend
 
-#### Etapa 1: Consulta Climática
+### Etapa 1: Consulta Climática
 1. Digite o nome do município (ex: "Rio de Janeiro")
 2. Clique em "Consultar Clima"
 3. O sistema buscará dados dos últimos 7 dias
+<div align="center">
+    <img src="assets/etapa_1.png" alt="Etapa 1" width="600">
+</div>
 
-#### Etapa 2: Análise dos Dados
-1. Visualize e edite os dados coletados
+### Etapa 2: Análise dos Dados
+1. Visualize o mapa e edite os dados coletados
 2. Confirme os parâmetros preenchidos automaticamente
 3. Clique em "Classificar Risco"
+<div align="center">
+    <img src="assets/etapa_2.png" alt="Etapa 2" width="600">
+</div>
 
-#### Etapa 3: Classificação de risco
+### Etapa 3: Classificação de risco
 1. Visualize o resultado em patamares `Baixo`, `Médio` e `Alto`
 2. Revise os dados utilizados
 3. Inicie uma nova consulta se necessário
+<div align="center">
+    <img src="assets/etapa_3.png" alt="Etapa 3" width="600">
+</div>
 
 <br>
 
@@ -53,8 +62,8 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 ## Modelo de Machine Learning utilizado
 
-- **Algoritmo**: K-Nearest Neighbors (KNN)
-- **Técnica de Balanceamento**: SMOTE
+- **Algoritmo**: K-Nearest Neighbors ([KNN](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html))
+- **Técnica de Preprocessamento para treino**: [SMOTE](https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html) (Sobreamostragem para equilibrar conjuntos de dados de classes minoritárias, criando exemplos interpolados entre vizinhos da própria classe.)
 - **Features**: Dados climáticos semanais
 - **Classes**: Risco Baixo (0), Médio (1), Alto (2)
 
@@ -122,13 +131,23 @@ Para obter uma chave gratuita da WeatherAPI:
 <br>
 
 ## Como Usar
-
-### 1. Iniciar o servidor
+### 1. Acesse o diretorio da API (se estiver na raiz do repositório)
 ```bash
 cd api
-python app.py
 ```
 
-### 2. Acesse a aplicação
+### 2. Execute a API
+```
+flask run --host 0.0.0.0 --port 5000
+```
+
+Em modo de desenvolvimento é recomendado executar utilizando o parâmetro reload, que reiniciará o servidor
+automaticamente após uma mudança no código fonte. 
+
+```
+flask run --host 0.0.0.0 --port 5000 --reload
+```
+
+### 3. Acesse a aplicação
 - **Frontend**: http://localhost:5000
 - **Documentação da API**: http://localhost:5000/docs
