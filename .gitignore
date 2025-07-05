@@ -2,6 +2,7 @@
 __pycache__/
 
 # Unit test / coverage reports
+api/.pytest_cache
 
 # Flask stuff:
 instance/
