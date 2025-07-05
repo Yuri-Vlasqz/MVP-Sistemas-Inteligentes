@@ -77,6 +77,8 @@ def apresenta_clima_historico(response_wheather_api: dict):
         })
 
     return {
+        'latitude': response_wheather_api['location']['lat'],
+        'longitude': response_wheather_api['location']['lon'],
         'municipio': response_wheather_api['location']['name'],
         'regiao': response_wheather_api['location']['region'],
         'pais': response_wheather_api['location']['country'],

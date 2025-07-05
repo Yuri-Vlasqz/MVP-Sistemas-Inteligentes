@@ -61,7 +61,7 @@ home_tag = Tag(
 )
 clima_tag = Tag(
     name="Clima-Historico",
-    description="Rota para consulta de clima via WheatherAPI em uma cidade específica",
+    description="Rota para consulta de clima via WheatherAPI em um município específico",
 )
 classificador_tag = Tag(
     name="Classificador-Dengue",

@@ -10,28 +10,62 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     line-height: 1.6;
+    padding-bottom: 0;
 }
 
 .container {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 20px 20px 0 20px;
 }
 
 /* Header */
 header {
-    text-align: center;
     color: white;
     margin-bottom: 30px;
 }
 
-header h1 {
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.logo-icon {
+    font-size: 3rem;
+    background: linear-gradient(135deg, #4CAF50, #8BC34A);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.header-text {
+    text-align: center;
+    flex: 1;
+    min-width: 300px;
+}
+
+.header-text h1 {
     font-size: 2.5rem;
     margin-bottom: 10px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
 }
 
-header p {
+.header-text p {
     font-size: 1.2rem;
     opacity: 0.9;
 }
@@ -153,6 +187,14 @@ header p {
 .input-group input:readonly {
     background: #f8f9fa;
     color: #666;
+    cursor: not-allowed;
+}
+
+.input-group input:not([readonly]) {
+    background: #fff;
+    color: #333;
+    border-color: #4CAF50;
+    box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.1);
 }
 
 .form-grid {
@@ -286,6 +328,49 @@ header p {
     margin-top: 5px;
 }
 
+/* Map Styles */
+.map-container {
+    margin: 20px 0;
+}
+
+.map-container h3 {
+    color: #555;
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+#map {
+    border: 2px solid #e1e5e9;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    padding: 0;
+}
+
+.compact-popup .leaflet-popup-content {
+    margin: 8px 10px;
+    line-height: 1.2;
+}
+
+.custom-popup {
+    text-align: center;
+    padding: 2px;
+}
+
+.custom-popup h5 {
+    margin: 0 0 2px 0;
+    color: #333;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.custom-popup small {
+    color: #666;
+    font-size: 0.7rem;
+}
+
 /* Resultado da Classificação */
 .resultado-risco {
     text-align: center;
@@ -326,13 +411,144 @@ header p {
     margin-bottom: 15px;
 }
 
+/* Footer com Instruções */
+.instructions-footer {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(10px);
+    margin-top: 40px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255,255,255,0.2);
+}
+
+.footer-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.instructions-footer h3 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+.instructions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.instruction-step {
+    background: rgba(255,255,255,0.8);
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.step-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.instruction-step h4 {
+    color: #333;
+    margin-bottom: 10px;
+    font-size: 1.2rem;
+}
+
+.instruction-step p {
+    color: #666;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.system-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.info-section {
+    background: rgba(255,255,255,0.7);
+    padding: 20px;
+    border-radius: 12px;
+    border-left: 4px solid #667eea;
+}
+
+.info-section h4 {
+    color: #333;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.info-section ul {
+    list-style: none;
+    padding: 0;
+}
+
+.info-section li {
+    color: #555;
+    margin-bottom: 8px;
+    padding-left: 15px;
+    position: relative;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.info-section li::before {
+    content: "▸";
+    color: #667eea;
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+}
+
+.info-section strong {
+    color: #333;
+}
+
+.footer-note {
+    background: rgba(255,200,100,0.2);
+    padding: 20px;
+    border-radius: 10px;
+    border-left: 4px solid #FF9800;
+    text-align: center;
+}
+
+.footer-note p {
+    color: #333;
+    margin-bottom: 10px;
+    line-height: 1.5;
+}
+
+.footer-note small {
+    color: #666;
+    font-size: 0.85rem;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
     .container {
         padding: 15px;
     }
 
-    header h1 {
+    .header-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .logo-icon {
+        font-size: 2.5rem;
+        width: 60px;
+        height: 60px;
+    }
+
+    .header-text h1 {
         font-size: 2rem;
     }
 
@@ -359,9 +575,49 @@ header p {
     .btn {
         width: 100%;
     }
+
+    .instructions-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .system-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .instruction-step {
+        padding: 20px;
+    }
+    
+    .instructions-footer h3 {
+        font-size: 1.5rem;
+    }
+    
+    .step-icon {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 480px) {
+    .header-content {
+        gap: 10px;
+    }
+
+    .logo-icon {
+        font-size: 2rem;
+        width: 50px;
+        height: 50px;
+    }
+
+    .header-text {
+        min-width: auto;
+    }
+
+    .header-text h1 {
+        font-size: 1.6rem;
+    }
+
     .progress-bar {
         flex-direction: column;
         gap: 20px;

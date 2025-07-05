@@ -5,33 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema de Classificação de Risco de Dengue</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Leaflet CSS para mapa -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Sistema de Classificação de Risco de Dengue</h1>
-            <p>Análise de risco baseada em dados climáticos</p>
+            <div class="header-content">
+                <div class="logo-icon">🦟</div>
+                <div class="header-text">
+                    <h1>Sistema de Classificação de Risco de Dengue</h1>
+                    <p>Análise baseada em dados climáticos</p>
+                </div>
+            </div>
         </header>
 
-        <!-- Progress Bar -->
+        <!-- Progresso de Etapas -->
         <div class="progress-container">
             <div class="progress-bar">
                 <div class="progress-step active" data-step="1">
                     <div class="step-number">1</div>
-                    <div class="step-label">Consulta Clima</div>
+                    <div class="step-label">Consulta Climática</div>
                 </div>
                 <div class="progress-step" data-step="2">
                     <div class="step-number">2</div>
-                    <div class="step-label">Dados Climáticos</div>
+                    <div class="step-label">Análise dos Dados</div>
                 </div>
                 <div class="progress-step" data-step="3">
                     <div class="step-number">3</div>
-                    <div class="step-label">Classificação</div>
+                    <div class="step-label">Classificação de risco</div>
                 </div>
             </div>
         </div>
 
-        <!-- Step 1: Consulta de Clima Histórico -->
+        <!-- Etapa 1: Consulta de Clima Histórico -->
         <div class="step-content" id="step1">
             <div class="card">
                 <h2>Etapa 1: Consulta de Clima Histórico</h2>
@@ -54,14 +61,20 @@
             </div>
         </div>
 
-        <!-- Step 2: Dados Climáticos -->
+        <!-- Etapa 2: Dados Climáticos -->
         <div class="step-content" id="step2" style="display: none;">
             <div class="card">
                 <h2>Etapa 2: Dados Climáticos Coletados</h2>
                 <div id="climaInfo"></div>
                 
+                <!-- Adicionar container do mapa -->
+                <div class="map-container">
+                    <h3>🗺️ Mapa da Localização</h3>
+                    <div id="map" style="height: 300px; border-radius: 10px; margin-bottom: 20px;"></div>
+                </div>
+                
                 <form id="dengueForm">
-                    <h3>Parâmetros para Classificação:</h3>
+                    <h3>Parâmetros semanais para Classificação de risco de dengue:</h3>
                     <div class="form-grid">
                         <div class="input-group">
                             <label for="semana">Semana do Ano:</label>
@@ -69,31 +82,31 @@
                         </div>
                         <div class="input-group">
                             <label for="temp_min">Temperatura Mínima (°C):</label>
-                            <input type="number" id="temp_min" name="temp_min" required readonly>
+                            <input type="number" id="temp_min" name="temp_min" required readonly step="0.01">
                         </div>
                         <div class="input-group">
                             <label for="temp_med">Temperatura Média (°C):</label>
-                            <input type="number" id="temp_med" name="temp_med" required readonly>
+                            <input type="number" id="temp_med" name="temp_med" required readonly step="0.01">
                         </div>
                         <div class="input-group">
                             <label for="temp_max">Temperatura Máxima (°C):</label>
-                            <input type="number" id="temp_max" name="temp_max" required readonly>
+                            <input type="number" id="temp_max" name="temp_max" required readonly step="0.01">
                         </div>
                         <div class="input-group">
                             <label for="precip_med">Precipitação Média (mm):</label>
-                            <input type="number" id="precip_med" name="precip_med" required readonly>
+                            <input type="number" id="precip_med" name="precip_med" required readonly step="0.01">
                         </div>
                         <div class="input-group">
                             <label for="umidade_med">Umidade Média (%):</label>
-                            <input type="number" id="umidade_med" name="umidade_med" required readonly>
+                            <input type="number" id="umidade_med" name="umidade_med" required readonly step="0.01">
                         </div>
                         <div class="input-group">
                             <label for="faixa_termica">Faixa Térmica (°C):</label>
-                            <input type="number" id="faixa_termica" name="faixa_termica" required readonly>
+                            <input type="number" id="faixa_termica" name="faixa_termica" required readonly step="0.01">
                         </div>
                         <div class="input-group">
                             <label for="dias_chuvosos">Dias Chuvosos:</label>
-                            <input type="number" id="dias_chuvosos" name="dias_chuvosos" required readonly>
+                            <input type="number" id="dias_chuvosos" name="dias_chuvosos" required readonly step="1">
                         </div>
                     </div>
                     
@@ -112,7 +125,7 @@
             </div>
         </div>
 
-        <!-- Step 3: Resultado da Classificação -->
+        <!-- Etapa 3: Resultado da Classificação -->
         <div class="step-content" id="step3" style="display: none;">
             <div class="card">
                 <h2>Etapa 3: Resultado da Classificação</h2>
@@ -126,6 +139,74 @@
         </div>
     </div>
 
+    <!-- Footer com instruções -->
+    <footer class="instructions-footer">
+        <div class="footer-container">
+            <h3>📋 Como Usar o Sistema</h3>
+            
+            <div class="instructions-grid">
+                <div class="instruction-step">
+                    <div class="step-icon">1️⃣</div>
+                    <h4>Consulta Climática</h4>
+                    <p>Digite o nome do município para obter dados climáticos dos últimos 7 dias via WeatherAPI.</p>
+                </div>
+                
+                <div class="instruction-step">
+                    <div class="step-icon">2️⃣</div>
+                    <h4>Análise dos Dados</h4>
+                    <p>Visualize os dados climáticos no mapa interativo e ajuste os parâmetros se necessário.</p>
+                </div>
+                
+                <div class="instruction-step">
+                    <div class="step-icon">3️⃣</div>
+                    <h4>Classificação de risco</h4>
+                    <p>O modelo de Machine Learning analisa os dados e classifica o risco de dengue (Baixo/Médio/Alto).</p>
+                </div>
+            </div>
+            
+            <div class="system-info">
+                <div class="info-section">
+                    <h4>🧠 Aprendizado de máquina</h4>
+                    <ul>
+                        <li><strong>Modelo utilizado:</strong> K-Nearest Neighbors (KNN)</li>
+                        <li><strong>Balanceamento:</strong> SMOTE para dados minoritários</li>
+                        <li><strong>Parâmetros:</strong> 8 variáveis climáticas + semana do ano</li>
+                        <li><strong>Precisão:</strong> Treinado com dados históricos de 2020 a 2024 no Brasil</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h4>🌐 Tecnologias</h4>
+                    <ul>
+                        <li><strong>Backend:</strong> Python, Flask, Scikit-learn</li>
+                        <li><strong>Frontend:</strong> HTML5, CSS3, JavaScript ES6</li>
+                        <li><strong>Mapa:</strong> Leaflet + OpenStreetMap</li>
+                        <li><strong>API Clima:</strong> WeatherAPI para dados históricos</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h4>📊 Variáveis Analisadas</h4>
+                    <ul>
+                        <li>Temperatura Mínima, Média e Máxima</li>
+                        <li>Precipitação Média e Dias Chuvosos</li>
+                        <li>Umidade Média do Ar</li>
+                        <li>Faixa Térmica (Amplitude)</li>
+                        <li>Semana do Ano (Sazonalidade)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-note">
+                <p><strong>⚠️ Aviso:</strong> Este sistema é uma ferramenta de apoio à decisão baseada em dados climáticos. 
+                Para decisões de saúde pública, consulte sempre órgãos oficiais competentes.</p>
+                <p><small>Desenvolvido como MVP para demonstração de Sistema Inteligente de Classificação de Risco de Dengue</small></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Adicionar Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

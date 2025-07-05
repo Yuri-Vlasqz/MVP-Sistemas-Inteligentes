@@ -1,6 +1,7 @@
 // Estado da aplicação
 let currentStep = 1;
 let climaData = null;
+let map = null; // Adicionar variável do mapa
 
 // Base URL da API
 const API_BASE_URL = window.location.origin;
@@ -97,14 +98,125 @@ function processarDadosClima(data) {
     // Calcular faixa térmica (diferença entre máxima e mínima)
     const faixa_termica = (data.media_temp_max - data.media_temp_min).toFixed(2);
 
-    // Preencher formulário automaticamente
+    // Preencher formulário automaticamente e tornar campos editáveis
     document.getElementById('temp_min').value = data.media_temp_min;
+    document.getElementById('temp_min').removeAttribute('readonly');
+    
     document.getElementById('temp_med').value = data.media_temp_med;
+    document.getElementById('temp_med').removeAttribute('readonly');
+    
     document.getElementById('temp_max').value = data.media_temp_max;
+    document.getElementById('temp_max').removeAttribute('readonly');
+    
     document.getElementById('precip_med').value = data.media_precip_total;
+    document.getElementById('precip_med').removeAttribute('readonly');
+    
     document.getElementById('umidade_med').value = data.media_umidade_med;
+    document.getElementById('umidade_med').removeAttribute('readonly');
+    
     document.getElementById('faixa_termica').value = faixa_termica;
+    
     document.getElementById('dias_chuvosos').value = data.dias_chuvosos;
+    document.getElementById('dias_chuvosos').removeAttribute('readonly');
+
+    // Inicializar mapa com a localização usando coordenadas da API
+    initializeMap(data.municipio, data.regiao, data.pais, data.latitude, data.longitude);
+    
+    // Adicionar listeners para recalcular faixa térmica automaticamente
+    setupFaixaTermicaListeners();
+}
+
+// Função para inicializar o mapa
+async function initializeMap(municipio, regiao, pais, latitude = null, longitude = null) {
+    try {
+        let coords;
+        
+        // Se já temos coordenadas da API, usar diretamente
+        if (latitude !== null && longitude !== null) {
+            coords = { lat: latitude, lon: longitude };
+        } else {
+            // Fallback: buscar coordenadas usando geocodificação
+            coords = await getCoordinates(`${municipio}, ${regiao}, ${pais}`);
+        }
+        
+        // Destruir mapa existente se houver
+        if (map) {
+            map.remove();
+        }
+
+        // Criar novo mapa
+        map = L.map('map').setView([coords.lat, coords.lon], 10);
+
+        // Adicionar camada do mapa
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Adicionar marcador
+        const marker = L.marker([coords.lat, coords.lon]).addTo(map);
+        
+        // Popup personalizado compacto
+        marker.bindPopup(`
+            <div class="custom-popup">
+                <h5>📍 ${municipio}</h5>
+                <small>Lat:${coords.lat.toFixed(3)}, Long:${coords.lon.toFixed(3)}</small>
+            </div>
+        `, {
+            maxWidth: 200,
+            className: 'compact-popup'
+        });
+
+        // Ajustar visualização
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+
+    } catch (error) {
+        console.error('Erro ao carregar mapa:', error);
+        // Fallback: mapa centralizado no Brasil
+        if (map) {
+            map.remove();
+        }
+        map = L.map('map').setView([-14.235004, -51.92528], 4);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+        
+        // Adicionar marcador genérico
+        L.marker([-14.235004, -51.92528]).addTo(map)
+            .bindPopup(`
+                <div class="custom-popup">
+                    <h5>📍 ${municipio}</h5>
+                    <small>Localização aproximada</small>
+                </div>
+            `, {
+                maxWidth: 200,
+                className: 'compact-popup'
+            });
+    }
+}
+
+// Função para obter coordenadas usando Nominatim (OpenStreetMap)
+async function getCoordinates(location) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(location)}&limit=1`;
+    
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        
+        if (data && data.length > 0) {
+            return {
+                lat: parseFloat(data[0].lat),
+                lon: parseFloat(data[0].lon)
+            };
+        } else {
+            throw new Error('Localização não encontrada');
+        }
+    } catch (error) {
+        console.error('Erro ao buscar coordenadas:', error);
+        // Coordenadas padrão do Brasil
+        return { lat: -14.235004, lon: -51.92528 };
+    }
 }
 
 // Função para classificar risco de dengue
@@ -180,7 +292,7 @@ function exibirResultado(data) {
         </div>
         
         <div class="clima-summary">
-            <h4>📊 Dados Utilizados na Classificação</h4>
+            <h4>📊 Dados Utilizados na Classificação em ${climaData.municipio}, ${climaData.regiao}, ${climaData.regiao, climaData.pais}</h4>
             <div class="clima-details">
                 <div class="clima-item">
                     <div class="value">Sem. ${document.getElementById('semana').value}</div>
@@ -233,6 +345,13 @@ function avancarEtapa(step) {
     document.getElementById(`step${currentStep}`).style.display = 'block';
     document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
     
+    // Redimensionar mapa se estivermos na etapa 2
+    if (step === 2 && map) {
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    }
+    
     // Scroll para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -252,6 +371,13 @@ function voltarEtapa(step) {
         document.querySelector(`[data-step="${i}"]`).classList.remove('completed');
     }
     
+    // Redimensionar mapa se estivermos voltando para a etapa 2
+    if (step === 2 && map) {
+        setTimeout(() => {
+            map.invalidateSize();
+        }, 100);
+    }
+    
     // Scroll para o topo
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -267,6 +393,21 @@ function novaConsulta() {
     // Limpar conteúdo
     document.getElementById('climaInfo').innerHTML = '';
     document.getElementById('resultadoClassificacao').innerHTML = '';
+    
+    // Restaurar atributo readonly nos campos
+    document.getElementById('temp_min').setAttribute('readonly', 'readonly');
+    document.getElementById('temp_med').setAttribute('readonly', 'readonly');
+    document.getElementById('temp_max').setAttribute('readonly', 'readonly');
+    document.getElementById('precip_med').setAttribute('readonly', 'readonly');
+    document.getElementById('umidade_med').setAttribute('readonly', 'readonly');
+    document.getElementById('faixa_termica').setAttribute('readonly', 'readonly');
+    document.getElementById('dias_chuvosos').setAttribute('readonly', 'readonly');
+    
+    // Destruir mapa
+    if (map) {
+        map.remove();
+        map = null;
+    }
     
     // Reset dos erros e loading
     hideError('climaError');
@@ -323,4 +464,21 @@ function validateForm(formData) {
         }
     }
     return true;
+}
+
+// Função para configurar listeners de recálculo da faixa térmica
+function setupFaixaTermicaListeners() {
+    const tempMinInput = document.getElementById('temp_min');
+    const tempMaxInput = document.getElementById('temp_max');
+    const faixaTermicaInput = document.getElementById('faixa_termica');
+    
+    function recalcularFaixaTermica() {
+        const tempMin = parseFloat(tempMinInput.value) || 0;
+        const tempMax = parseFloat(tempMaxInput.value) || 0;
+        const faixaTermica = (tempMax - tempMin).toFixed(2);
+        faixaTermicaInput.value = faixaTermica;
+    }
+    
+    tempMinInput.addEventListener('input', recalcularFaixaTermica);
+    tempMaxInput.addEventListener('input', recalcularFaixaTermica);
 }
