@@ -12,34 +12,6 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 <br>
 
-## Fluxo de uso da aplicação pela inteface/frontend
-
-### Etapa 1: Consulta Climática
-1. Digite o nome do município (ex: "Rio de Janeiro")
-2. Clique em "Consultar Clima"
-3. O sistema buscará dados dos últimos 7 dias
-<div align="center">
-    <img src="assets/etapa_1.png" alt="Etapa 1" width="600">
-</div>
-
-### Etapa 2: Análise dos Dados
-1. Visualize o mapa e edite os dados coletados
-2. Confirme os parâmetros preenchidos automaticamente
-3. Clique em "Classificar Risco"
-<div align="center">
-    <img src="assets/etapa_2.png" alt="Etapa 2" width="600">
-</div>
-
-### Etapa 3: Classificação de risco
-1. Visualize o resultado em patamares `Baixo`, `Médio` e `Alto`
-2. Revise os dados utilizados
-3. Inicie uma nova consulta se necessário
-<div align="center">
-    <img src="assets/etapa_3.png" alt="Etapa 3" width="600">
-</div>
-
-<br>
-
 ## Principais Tecnologias
 
 ### Backend
@@ -151,3 +123,36 @@ flask run --host 0.0.0.0 --port 5000 --reload
 ### 3. Acesse a aplicação
 - **Frontend**: http://localhost:5000
 - **Documentação da API**: http://localhost:5000/docs
+
+<br>
+
+## Fluxo de uso da aplicação pela inteface/frontend
+
+### Etapa 1: Consulta Climática
+1. Digite o nome do município (ex: "Rio de Janeiro")
+2. Clique em "Consultar Clima"
+3. O sistema buscará dados dos últimos 7 dias
+<div align="center">
+    <img src="assets/etapa_1.png" alt="Etapa 1" width="600">
+</div>
+
+### Etapa 2: Análise dos Dados
+1. Visualize o mapa e edite os dados coletados
+2. Confirme os parâmetros preenchidos automaticamente
+3. Clique em "Classificar Risco"
+<div align="center">
+    <img src="assets/etapa_2.png" alt="Etapa 2" width="600">
+</div>
+
+### Etapa 3: Classificação de risco
+1. Visualize o resultado em patamares `Baixo`, `Médio` e `Alto`
+2. Revise os dados utilizados
+3. Inicie uma nova consulta se necessário
+<div align="center">
+    <img src="assets/etapa_3.png" alt="Etapa 3" width="600">
+</div>
+
+<br>
+
+### ⚠️ **Aviso:**
+> Este sistema é uma ferramenta de apoio à decisão baseada em dados climáticos de escopo simplificado. Para decisões de saúde pública, consulte sempre órgãos oficiais competentes.
