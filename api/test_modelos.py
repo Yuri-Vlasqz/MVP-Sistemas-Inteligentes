@@ -1,6 +1,6 @@
 from model import *
 
-# To run: pytest -v test_modelos.py
+# Comando de teste: pytest -s -v test_modelos.py
 
 # Instanciação das Classes
 carregador = Carregador()
@@ -23,18 +23,28 @@ y = dataset.iloc[:,-1]
 
 
 # Método para testar modelo KNN a partir do arquivo correspondente
-# O nome do método a ser testado necessita começar com "test_"
-def test_modelo_knn():
+def test_modelo_knn(score=0.85):
+    """Testa o modelo KNN e verifica a score minimo das métricas.
+    """
+    print(f"\nScore mínimo das métricas: {score}")
     # Importando modelo de KNN
     knn_path = './MachineLearning/models/dengue_knn_model_smote_min.pkl'
+    print(f"importando modelo KNN em: {knn_path}")
     modelo_knn = modelo.carrega_modelo(knn_path)
 
     # Obtendo as métricas do KNN
-    acuracia_knn = avaliador.avaliar(modelo_knn, X, y)
-    
+    acuracia_knn = avaliador.avaliar_accuracy(modelo_knn, X, y)
+    print(f"- Acurácia:\t{acuracia_knn:.3f}")
+    recall_knn = avaliador.avaliar_recall(modelo_knn, X, y)
+    print(f"- Recall:\t{recall_knn:.3f}")
+    precisao_knn = avaliador.avaliar_precision(modelo_knn, X, y)
+    print(f"- Precisão:\t{precisao_knn:.3f}")
+    f1_knn = avaliador.avaliar_f1(modelo_knn, X, y)
+    print(f"- F1-Score:\t{f1_knn:.3f}")
+
     # Testando as métricas do KNN
-    # Modifique as métricas de acordo com seus requisitos
-    assert acuracia_knn >= 0.85
-    # assert recall_knn >= 0.5 
-    # assert precisao_knn >= 0.5 
-    # assert f1_knn >= 0.5 
+    assert acuracia_knn >= score
+    assert recall_knn >= score 
+    assert precisao_knn >= score
+    assert f1_knn >= score
+

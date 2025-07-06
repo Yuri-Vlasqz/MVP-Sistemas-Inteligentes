@@ -5,11 +5,19 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 <br>
 
-## Funcionalidades de rotas
+## Funcionalidades e respostas das principais rotas
 
-- `GET /clima-historico` - **Consulta de Clima Histórico**: Integração com WeatherAPI para obter dados dos últimos 7 dias
-- `POST /classificador-dengue` **Classificação Inteligente**: Modelo de machine learning (KNN) treinado para classificar risco de dengue
+- `GET /clima-historico` - **Consulta de Clima Histórico**: Integração com WeatherAPI para obter dados dos últimos 7 dias.
+<div align="center">
+    <img src="assets/rota_clima-historico.png" alt="Rota clima-histórico" width="600">
+</div>
+<br>
 
+- `POST /classificador-dengue` **Classificação Inteligente**: A predição utiliza modelo de machine learning, treinado para classificar risco de dengue.
+<div align="center">
+    <img src="assets\rota_classificador-dengue.jpeg" alt="Rota classificador-dengue" width="600">
+</div>
+<br>
 <br>
 
 ## Principais Tecnologias
@@ -22,8 +30,8 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 
 ### Frontend
-- **HTML5/CSS3/JavaScript** para iterface responsiva
-- **Leaflet e OpenStreetMap**: para mapas interativos e dados cartográficos.
+- **HTML/CSS/JavaScript:** Para iterface responsiva
+- **Leaflet e OpenStreetMap:** para mapas interativos e dados cartográficos.
 
 
 ### APIs Externas
@@ -51,14 +59,20 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 ## Estrutura do Projeto
 
+#### Árvore de diretórios e principais arquivos:
 ```
 MVP-Sistemas-Inteligentes/
 ├── api/                    # Backend Flask
-│   ├── app.py                  # Aplicação e rotas Flask
-│   ├── schemas/                # schemas de rotas
+│   ├── MachineLearning/        # Dados para ML
+│   │   ├── datasets/               # datasets de treino e teste
+│   │   ├── models/                 # modelo treinado
+│   │   └── notebooks/              # notebooks de ML e datasets
+│   │
 │   ├── model/                  # Classes do modelo ML
-│   ├── MachineLearning/        # datasets, Modelos treinados e notebooks
-│   └── requirements.txt        # Dependências Python
+│   ├── schemas/                # schemas de validação das rotas
+│   ├── app.py                  # Aplicação e rotas Flask
+│   ├── requirements.txt        # Dependências Python
+│   └── test_modelods.py        # testes ML com pytest
 │
 ├── front/                  # Frontend
 │   ├── index.html              # Página principal
@@ -66,6 +80,7 @@ MVP-Sistemas-Inteligentes/
 │   └── styles.css              # Estilos CSS
 │
 ├── .env                    # arquivo com chave de API (deve ser criado)
+├── assets/                 # mídias do README
 └── README.md               # Documentação
 ```
 
@@ -103,24 +118,29 @@ Para obter uma chave gratuita da WeatherAPI:
 <br>
 
 ## Como Usar
+
 ### 1. Acesse o diretorio da API (se estiver na raiz do repositório)
 ```bash
 cd api
 ```
 
-### 2. Execute a API
+### 2. Teste o modelo ML em diferentes métricas
+
+```bash
+pytest -s -v test_modelos.py  # '-s' para output de cada metrica e '-v' para mais detalhes
+```
+
+### 3. Execute a API
 ```
 flask run --host 0.0.0.0 --port 5000
 ```
-
 Em modo de desenvolvimento é recomendado executar utilizando o parâmetro reload, que reiniciará o servidor
 automaticamente após uma mudança no código fonte. 
-
 ```
 flask run --host 0.0.0.0 --port 5000 --reload
 ```
 
-### 3. Acesse a aplicação
+### 4. Acesse a aplicação
 - **Frontend**: http://localhost:5000
 - **Documentação da API**: http://localhost:5000/docs
 
@@ -155,4 +175,4 @@ flask run --host 0.0.0.0 --port 5000 --reload
 <br>
 
 ### ⚠️ **Aviso:**
-> Este sistema é uma ferramenta de apoio à decisão baseada em dados climáticos de escopo simplificado. Para decisões de saúde pública, consulte sempre órgãos oficiais competentes.
+> Este sistema é uma prova de conceito de uma ferramenta assistiva à identificação surtos de dengue, baseada em dados climáticos de escopo simplificado. **Para decisões de saúde pública, consulte sempre órgãos oficiais competentes.**
