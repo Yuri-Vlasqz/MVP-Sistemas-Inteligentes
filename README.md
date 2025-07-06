@@ -1,7 +1,7 @@
 # MVP Sistemas Inteligentes - Classificação de Risco de Dengue
 Este repositório contém a implementação do MVP (Minimum Viable Product) da Sprint de Qualidade de Software, Segurança e Sistemas Inteligentes do Curso de Engenharia de Software da PUC-Rio.
 
-> No contexto da dificuldade em prever de forma prática, em qual local pode estar em maior risco de incidência de dengue, foi criado esse sistema inteligente para classificar o risco de dengue em 3 patamares (`Baixo`, `Médio` e `Alto`), baseado na análise de dados climáticos históricos durante a última semana e o número da semana no ano.
+> No contexto da dificuldade em prever de forma prática, em qual local pode estar em maior risco de incidência de dengue, foi criado esse sistema inteligente para classificar o risco de dengue em 3 patamares (`Baixo`, `Médio` e `Alto`), baseado na análise de dados climáticos históricos durante a última semana.
 
 <br>
 
@@ -23,7 +23,7 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 ## Principais Tecnologias
 
 ### Backend
-- **Python 3.12**
+- **Python 3.12.10**
 - **Flask-OpenAPI3** - Framework web com documentação automática da API com Swagger-UI
 - **Pandas e Scikit-learn** - Manipulação de dados e treinamento de modelo Machine learning
 - **Requests** - Chamadas HTTP para API externa do WeatherAPI
@@ -42,19 +42,17 @@ Este repositório contém a implementação do MVP (Minimum Viable Product) da S
 
 ## Modelo de Machine Learning utilizado
 
-- **Algoritmo**: K-Nearest Neighbors ([KNN](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html))
-- **Técnica de Preprocessamento para treino**: [SMOTE](https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html) (Sobreamostragem para equilibrar conjuntos de dados de classes minoritárias, criando exemplos interpolados entre vizinhos da própria classe.)
-- **Features**: Dados climáticos semanais
-- **Classes**: Risco Baixo (0), Médio (1), Alto (2)
-
-### Parâmetros de entrada para classificação
-- Semana do ano
-- Temperatura mínima, média e máxima
-- Precipitação média
-- Umidade média
-- Faixa térmica
-- Dias chuvosos
-
+- **Algoritmo classificador**: K-Nearest Neighbors ([KNN](https://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html))
+- **Técnica de pré-processamento para treino**: [SMOTE](https://imbalanced-learn.org/stable/references/generated/imblearn.over_sampling.SMOTE.html) (Sobreamostragem para equilibrar conjuntos de dados de classes minoritárias, criando exemplos interpolados entre vizinhos da própria classe.)
+- **Features/Parâmetros de entrada para classificação**: 
+    - Semana do ano
+    - Temperatura mínima, média e máxima
+    - Precipitação média
+    - Umidade média
+    - Faixa térmica
+    - Dias chuvosos
+- **Classes *target***: Risco de dengue `Baixo = 0`, `Médio = 1`, `Alto = 2`
+> **OBS:** mais informações no [notebook de treinamento ML](api/MachineLearning/notebooks/dengue_model_classification.ipynb)
 <br>
 
 ## Estrutura do Projeto
@@ -66,7 +64,7 @@ MVP-Sistemas-Inteligentes/
 │   ├── MachineLearning/        # Dados para ML
 │   │   ├── datasets/               # datasets de treino e teste
 │   │   ├── models/                 # modelo treinado
-│   │   └── notebooks/              # notebooks de ML e datasets
+│   │   └── notebooks/              # notebooks de ML e dados
 │   │
 │   ├── model/                  # Classes do modelo ML
 │   ├── schemas/                # schemas de validação das rotas
@@ -125,9 +123,9 @@ cd api
 ```
 
 ### 2. Teste o modelo ML em diferentes métricas
-
+> **OBS:** Para passar no teste todas métricas devem ter score >= 0,85.
 ```bash
-pytest -s -v test_modelos.py  # '-s' para output de cada metrica e '-v' para mais detalhes
+pytest -s -v test_modelos.py  # '-s' para output de cada métrica e '-v' para mais detalhes
 ```
 
 ### 3. Execute a API
@@ -174,5 +172,6 @@ flask run --host 0.0.0.0 --port 5000 --reload
 
 <br>
 
+---
 ### ⚠️ **Aviso:**
 > Este sistema é uma prova de conceito de uma ferramenta assistiva à identificação surtos de dengue, baseada em dados climáticos de escopo simplificado. **Para decisões de saúde pública, consulte sempre órgãos oficiais competentes.**
